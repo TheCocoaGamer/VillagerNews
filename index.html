@@ -1,3 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>WebDisplays Random YT Player</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+      iframe {
+        border: none;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The video player -->
+    <iframe id="player" allow="autoplay" allowfullscreen></iframe>
+
     <script>
       // === CONFIG ZONE ===
 
@@ -32,11 +55,14 @@
       // Pick a random video ID
       const rand = videoIDs[Math.floor(Math.random() * videoIDs.length)];
 
-      // Log to console so you know which video was picked
+      // Log to console so you can verify randomness
       console.log(`🎯 Selected video ID: ${rand}`);
 
-      // Force the single video to loop (optional)
+      // Build the YouTube embed URL
       const url = `https://www.youtube.com/embed/${rand}?playlist=${rand}${commonParams}`;
 
+      // Set the video in the iframe
       document.getElementById("player").src = url;
     </script>
+  </body>
+</html>
