@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>WebDisplays Playlist Randomizer v1.2</title>
+    <title>WebDisplays Playlist Randomizer v1.3</title>
     <style>
       html, body {
         margin: 0;
@@ -27,17 +27,16 @@
 
     <script>
       // === CONFIG ZONE ===
-      const version = "v1.2";
+      const version = "v1.3";
       const numVideos = 23; // Total videos in your playlist
 
-      // Random number of skips: 0 to numVideos - 1
-      const skipClicks = Math.floor(Math.random() * numVideos);
-
-      // Log startup info for debugging
       console.log(`🎬 WebDisplays Playlist Randomizer ${version}`);
+
+      const skipClicks = Math.floor(Math.random() * numVideos);
       console.log(`🔀 Will skip ahead by ${skipClicks} video(s)`);
 
       const delay = 5000; // 5 seconds to let player load
+      const pausePlayDelay = 3000; // Time after skips to fake user click
 
       function skipVideos() {
         const iframe = document.getElementById("player");
@@ -55,6 +54,33 @@
         }
 
         console.log(`✅ Skip commands sent (${skipClicks} times)`);
+
+        // Try to "fake click" by pausing and playing
+        setTimeout(() => {
+          console.log(`🖱️ Faking pause and play to activate user event`);
+
+          iframeWindow.postMessage(
+            JSON.stringify({
+              event: "command",
+              func: "pauseVideo",
+              args: []
+            }),
+            "*"
+          );
+
+          setTimeout(() => {
+            iframeWindow.postMessage(
+              JSON.stringify({
+                event: "command",
+                func: "playVideo",
+                args: []
+              }),
+              "*"
+            );
+            console.log(`▶️ Play triggered — user interaction faked.`);
+          }, 500); // Half a second after pause
+
+        }, pausePlayDelay);
       }
 
       setTimeout(skipVideos, delay);
