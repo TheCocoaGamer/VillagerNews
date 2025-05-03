@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>WebDisplays Random YT Player</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+      iframe {
+        border: none;
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id="player" allow="autoplay" allowfullscreen></iframe>
+    <script>
+      // === CONFIG ZONE ===
+
+      const usePlaylist = true;
+
+      // Your playlist:
+      const playlistID = "PLnVrQgGuTfZ_JEkI6ieqFE6Sox12YnRAt";
+
+      // Optional: if using standalone videos instead
+      const videoIDs = [
+        "CleUrqPLCzU",
+        "VIDEO_ID_2",
+        "VIDEO_ID_3"
+      ];
+
+      // Common player settings
+      const commonParams = "&autoplay=1&mute=1&loop=1&cc_load_policy=1";
+
+      // === LOGIC ZONE ===
+      let url;
+
+      if (usePlaylist) {
+        const startIndex = Math.floor(Math.random() * 10) + 1; // Pick random video 1-10
+        url = `https://www.youtube.com/embed/videoseries?list=${playlistID}${commonParams}&index=${startIndex}`;
+      } else {
+        const rand = videoIDs[Math.floor(Math.random() * videoIDs.length)];
+        url = `https://www.youtube.com/embed/${rand}?playlist=${rand}${commonParams}`;
+      }
+
+      document.getElementById("player").src = url;
+    </script>
+  </body>
+</html>
