@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>WebDisplays Playlist Randomizer</title>
+    <title>WebDisplays Playlist Randomizer v1.2</title>
     <style>
       html, body {
         margin: 0;
@@ -22,30 +22,41 @@
       id="player" 
       allow="autoplay" 
       allowfullscreen 
-      src="https://www.youtube.com/embed/videoseries?list=PLnVrQgGuTfZ_JEkI6ieqFE6Sox12YnRAt&autoplay=1&mute=1&cc_load_policy=1">
+      src="https://www.youtube.com/embed/videoseries?list=PLnVrQgGuTfZ_JEkI6ieqFE6Sox12YnRAt&autoplay=1&mute=1&cc_load_policy=1&enablejsapi=1">
     </iframe>
 
     <script>
+      // === CONFIG ZONE ===
+      const version = "v1.2";
       const numVideos = 23; // Total videos in your playlist
 
       // Random number of skips: 0 to numVideos - 1
       const skipClicks = Math.floor(Math.random() * numVideos);
-      console.log(`🔀 Skipping ahead by ${skipClicks} video(s)`);
 
-      const delay = 5000; // 5 seconds to let player load (adjust if needed)
+      // Log startup info for debugging
+      console.log(`🎬 WebDisplays Playlist Randomizer ${version}`);
+      console.log(`🔀 Will skip ahead by ${skipClicks} video(s)`);
+
+      const delay = 5000; // 5 seconds to let player load
 
       function skipVideos() {
         const iframe = document.getElementById("player");
         const iframeWindow = iframe.contentWindow;
 
         for (let i = 0; i < skipClicks; i++) {
-          // Send YouTube player command to skip to next video
-          iframeWindow.postMessage('{"event":"command","func":"nextVideo","args":""}', '*');
+          iframeWindow.postMessage(
+            JSON.stringify({
+              event: "command",
+              func: "nextVideo",
+              args: []
+            }),
+            "*"
+          );
         }
-      }
-      console.log(`Version 1.1 Ready!`);
 
-      // Wait before skipping to ensure player has loaded
+        console.log(`✅ Skip commands sent (${skipClicks} times)`);
+      }
+
       setTimeout(skipVideos, delay);
     </script>
   </body>
