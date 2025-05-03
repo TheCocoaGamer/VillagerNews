@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>WebDisplays Random YT Player</title>
+    <title>WebDisplays Playlist Randomizer</title>
     <style>
       html, body {
         margin: 0;
@@ -18,51 +18,34 @@
     </style>
   </head>
   <body>
-    <!-- The video player -->
-    <iframe id="player" allow="autoplay" allowfullscreen></iframe>
+    <iframe 
+      id="player" 
+      allow="autoplay" 
+      allowfullscreen 
+      src="https://www.youtube.com/embed/videoseries?list=PLnVrQgGuTfZ_JEkI6ieqFE6Sox12YnRAt&autoplay=1&mute=1&cc_load_policy=1">
+    </iframe>
 
     <script>
-      // === CONFIG ZONE ===
+      const numVideos = 23; // Total videos in your playlist
 
-      const videoIDs = [
-        "CleUrqPLCzU",
-        "1hoSYvwnv_E",
-        "A5eIRDPUx_k",
-        "ISfNviwVs_A",
-        "z-TUOiJVaYk",
-        "TH0ZXfmjRqE",
-        "vl4XOzGxLDk",
-        "CjbGeoQV7Lk",
-        "b_VRJa9rjso",
-        "XOhLf-6EwEg",
-        "dzudQVAVVQ0",
-        "qtwz81uG47k",
-        "Frtax3pXPtg",
-        "mBCVeX0mXBw",
-        "U3p21FI9WBw",
-        "DXfCYUYDdcA",
-        "ESXkzitisLc",
-        "CYtaz0URX4c",
-        "CNeW3BbZc9Q",
-        "JvMoBwtBN6U",
-        "tFPcx4X9-e8",
-        "N3bHFs-gKr4",
-        "ZeGLH-OzWho"
-      ];
+      // Random number of skips: 0 to numVideos - 1
+      const skipClicks = Math.floor(Math.random() * numVideos);
+      console.log(`🔀 Skipping ahead by ${skipClicks} video(s)`);
 
-      const commonParams = "&autoplay=1&mute=1&cc_load_policy=1";
+      const delay = 5000; // 5 seconds to let player load (adjust if needed)
 
-      // Pick a random video ID
-      const rand = videoIDs[Math.floor(Math.random() * videoIDs.length)];
+      function skipVideos() {
+        const iframe = document.getElementById("player");
+        const iframeWindow = iframe.contentWindow;
 
-      // Log to console so you can verify randomness
-      console.log(`🎯 Selected video ID: ${rand}`);
+        for (let i = 0; i < skipClicks; i++) {
+          // Send YouTube player command to skip to next video
+          iframeWindow.postMessage('{"event":"command","func":"nextVideo","args":""}', '*');
+        }
+      }
 
-      // Build the YouTube embed URL
-      const url = `https://www.youtube.com/embed/${rand}?playlist=${rand}${commonParams}`;
-
-      // Set the video in the iframe
-      document.getElementById("player").src = url;
+      // Wait before skipping to ensure player has loaded
+      setTimeout(skipVideos, delay);
     </script>
   </body>
 </html>
